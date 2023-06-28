@@ -1,0 +1,93 @@
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(135deg, #111, #333);
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 3rem;
+  text-align: center;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+ul#crypto-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+ul#crypto-grid li {
+  position: relative;
+  background: linear-gradient(45deg, #222, rgb(255, 0, 0));
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  animation: animatedBackground 20s ease infinite;
+}
+
+ul#crypto-grid li h2 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #fff;
+}
+
+ul#crypto-grid li p {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #fff;
+}
+
+ul#crypto-grid li .dropdown-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #fff;
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+
+ul#crypto-grid li .dropdown-content {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 999;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 1rem;
+}
+
+ul#crypto-grid li:hover .dropdown-btn {
+  transform: rotate(180deg);
+}
+
+ul#crypto-grid li:hover .dropdown-content {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
