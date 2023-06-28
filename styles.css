@@ -33,7 +33,7 @@ ul#crypto-grid {
 
 ul#crypto-grid li {
   position: relative;
-  background: linear-gradient(45deg, #222, rgb(255, 0, 0));
+  background: linear-gradient(45deg, #222, rgba(255, 0, 0,0.1));
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
