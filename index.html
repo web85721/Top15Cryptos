@@ -1,111 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Editable Calendar</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  table, th, td {
-    border: 1px solid #ccc;
-  }
-  th, td {
-    padding: 10px;
-    text-align: center;
-  }
-  th {
-    background-color: #f2f2f2;
-  }
-  td {
-    cursor: pointer;
-  }
-</style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/addons/p5.sound.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="utf-8" />
+
 </head>
+
 <body>
-  <h1>Editable Calendar</h1>
-  <table id="calendar">
-    <!-- JavaScript will generate the calendar here -->
-  </table>
-
-  <script>
-    // Function to generate calendar
-    function generateCalendar() {
-      var currentDate = new Date();
-      var year = currentDate.getFullYear();
-      var month = currentDate.getMonth();
-
-      var table = document.getElementById('calendar');
-      table.innerHTML = ''; // Clear existing calendar
-
-      // Loop through remaining months in the current year
-      for (var m = month; m <= 11; m++) {
-        var firstDay = new Date(year, m, 1);
-        var lastDay = new Date(year, m + 1, 0);
-        var daysInMonth = lastDay.getDate();
-
-        var headerRow = table.insertRow();
-        var headerCell = headerRow.insertCell();
-        headerCell.colSpan = 7;
-        headerCell.textContent = new Date(year, m, 1).toLocaleString('default', { month: 'long' });
-        headerCell.style.fontWeight = 'bold';
-
-        var dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        var daysRow = table.insertRow();
-        
-        // Create day name headers
-        for (var d = 0; d < 7; d++) {
-          var dayCell = daysRow.insertCell();
-          dayCell.textContent = dayNames[d];
-        }
-
-        var date = 1;
-        var firstDayIndex = firstDay.getDay();
-        var weeks = Math.ceil((daysInMonth + firstDayIndex) / 7);
-
-        // Create calendar rows and cells
-        for (var w = 0; w < weeks; w++) {
-          var weekRow = table.insertRow();
-
-          for (var d = 0; d < 7; d++) {
-            var dayCell = weekRow.insertCell();
-
-            if (w === 0 && d < firstDayIndex) {
-              dayCell.textContent = '';
-            } else if (date > daysInMonth) {
-              break;
-            } else {
-              dayCell.textContent = date;
-              dayCell.dataset.date = year + '-' + (m + 1).toString().padStart(2, '0') + '-' + date.toString().padStart(2, '0');
-              dayCell.addEventListener('click', editCell);
-              date++;
-            }
-          }
-        }
-      }
-    }
-
-    // Function to edit cell
-    function editCell(event) {
-      var cell = event.target;
-      var oldValue = cell.textContent.trim();
-      var newValue = prompt('Edit ' + cell.dataset.date, oldValue);
-
-      if (newValue !== null && newValue.trim() !== '') {
-        cell.textContent = newValue.trim();
-        // Save history or update storage as needed
-      }
-    }
-
-    // Generate calendar on page load
-    generateCalendar();
-  </script>
+  <main>
+  </main>
+  <script src="sketch.js"></script>
 </body>
+
 </html>
