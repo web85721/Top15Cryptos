@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Distance Calculator</title>
+    <title>Step Tracker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,24 +21,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        input[type="number"] {
-            padding: 8px;
-            margin: 5px;
-            width: 100px;
-            text-align: center;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #result {
+        #step-count {
             margin-top: 20px;
             font-size: 18px;
         }
@@ -46,26 +29,67 @@
 </head>
 <body>
     <div class="container">
-        <h2>Distance Calculator</h2>
-        <label for="speed">Enter Speed (km/h):</label><br>
-        <input type="number" id="speed" min="0" required><br><br>
-        <label for="time">Enter Time (hours):</label><br>
-        <input type="number" id="time" min="0" required><br><br>
-        <button onclick="calculateDistance()">Calculate Distance</button>
-        <p id="result"></p>
+        <h2>Step Tracker</h2>
+        <button onclick="startTracking()">Start Tracking</button>
+        <button onclick="stopTracking()">Stop Tracking</button>
+        <p id="step-count">Steps taken: <span id="count">0</span></p>
     </div>
 
     <script>
-        function calculateDistance() {
-            const speed = parseFloat(document.getElementById('speed').value);
-            const time = parseFloat(document.getElementById('time').value);
+        let steps = 0;
+        let previousLocation = null;
 
-            if (!isNaN(speed) && !isNaN(time)) {
-                const distance = speed * time;
-                document.getElementById('result').textContent = `Distance Traveled: ${distance.toFixed(2)} kilometers`;
+        function startTracking() {
+            if ('geolocation' in navigator) {
+                navigator.geolocation.watchPosition(onLocationUpdate, onLocationError, { enableHighAccuracy: true });
             } else {
-                document.getElementById('result').textContent = 'Please enter valid numbers for speed and time.';
+                alert('Geolocation is not supported by your browser');
             }
+        }
+
+        function stopTracking() {
+            navigator.geolocation.clearWatch(watchId);
+            previousLocation = null;
+        }
+
+        function onLocationUpdate(position) {
+            const currentLocation = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            };
+
+            if (previousLocation) {
+                const distance = calculateDistance(previousLocation, currentLocation);
+                if (distance > 0.01) { // Simulate a step if distance is more than 10 meters (adjust as needed)
+                    steps++;
+                    document.getElementById('count').textContent = steps;
+                }
+            }
+
+            previousLocation = currentLocation;
+        }
+
+        function onLocationError(error) {
+            console.error('Error getting location:', error.message);
+        }
+
+        function calculateDistance(prevLoc, currLoc) {
+            const lat1 = prevLoc.latitude;
+            const lon1 = prevLoc.longitude;
+            const lat2 = currLoc.latitude;
+            const lon2 = currLoc.longitude;
+
+            const R = 6371; // Radius of the Earth in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c; // Distance in km
+
+            return distance;
         }
     </script>
 </body>
